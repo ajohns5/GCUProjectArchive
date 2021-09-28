@@ -1,0 +1,13 @@
+int list [10];
+int func (int j , int k) {
+if (k < j) {
+while (j > 0) {
+list [j] = 2 * j + 1;
+j = j - 1;
+}
+return list [k];
+}
+else {
+return 0;
+}
+}

@@ -1,0 +1,7 @@
+The lexer.GCU-PL file is the sample code input getting fed into the lexer.
+
+The syntax.GCU-PL file is the output from the lexer of the token, tpe and line number, which is also the input file into the syntax analyzer.
+
+Syntax.py should run fine as long as the syntax.GCU-PL file is located in the same directory.
+
+
