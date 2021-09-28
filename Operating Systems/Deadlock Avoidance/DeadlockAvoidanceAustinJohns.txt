@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <pthread.h>
+
+//Austin Johns
+//CST-315
+
+
+ struct sum_runner_struct{
+        long long answer;
+        long long limit;
+        };
+//formulate sum runner to track time and increment tracker
+    void* sum_runner(void* arg){
+        struct sum_runner_struct *arg_struct = (struct sum_runner_struct*) arg;
+        long long *limit_ptr = (long long*) arg;
+        long long limit = *limit_ptr;
+        long long sum = 0;
+        for (long long i = 0; i <= arg_struct->limit; i++) {
+            sum += i;
+        }
+        arg_struct->answer = sum;
+
+        pthread_exit(0);
+
+    }
+
+
+int main(int argc, char *argv[0])
+{
+   if (argc < 2) {
+    printf("Usage: %s <num> <num> ... <num-n>\n", argv[0]);
+    exit(-1);
+   }
+   int num_args = argc - 1;
+   struct sum_runner_struct args[num_args];
+
+   long long limit = atoll(argv[1]);
+
+   pthread_t tids[num_args];
+
+   for (int i = 0; i < num_args; i++) {
+    args[i].limit = atoll(argv[i + 1]);
+    //formulate necessary attributes
+    pthread_attr_t attr;
+    //using attributes
+    pthread_attr_init(&attr);
+    //new thread array for args use
+    pthread_create(&tids[i], &attr, sum_runner, &args[i]);
+
+   }
+
+   for (int i = 0; i < num_args; i++){
+    pthread_join(tids[i], NULL);
+//activity log output
+    printf("The thread %d Sums numbers with (limits = 0 to %lld) creating a Sum of %lld\n",
+            i, args[i].limit, args[i].answer);
+
+   }
+   return 0;
+
+}
